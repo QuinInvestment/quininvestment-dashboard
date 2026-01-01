@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet professionnel – Gestion financière</title>
+    <style>
+        :root {
+            --primary: #1f4f7b;
+            --primary-light: #e6eff7;
+            --accent: #f2b705;
+            --bg: #f5f7fa;
+            --text: #1a1a1a;
+            --muted: #6b7280;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Layout général */
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #10273b);
+            color: #fff;
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            font-size: 1.1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a {
+            position: relative;
+            padding-bottom: 0.2rem;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 2px;
+            width: 0;
+            background: var(--accent);
+            transition: width 0.2s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero */
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary), #10273b);
+            color: #fff;
+            padding: 3.5rem 0 4rem;
+        }
+
+        .hero-inner {
+            display: grid;
+            grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 999px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 span {
+            color: var(--accent);
+        }
+
+        .hero-subtitle {
+            font-size: 0.98rem;
+            max-width: 34rem;
+            color: #e5e7eb;
+            margin-bottom: 1.6rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #111827;
+            border-radius: 999px;
+            padding: 0.65rem 1.4rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.12s ease, box-shadow 0.12s ease;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 26px rgba(0, 0, 0, 0.35);
+        }
+
+        .btn-ghost {
+            border-radius: 999px;
+            padding: 0.6rem 1.3rem;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            font-size: 0.9rem;
+            color: #e5e7eb;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .hero-meta {
+            font-size: 0.8rem;
+            opacity: 0.85;
+            margin-top: 0.6rem;
+        }
+
+        .hero-card {
+            background: rgba(15, 23, 42, 0.75);
+            border-radius: 1.1rem;
+            padding: 1.5rem 1.4rem;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            backdrop-filter: blur(8px);
+        }
+
+        .hero-card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-metric {
+            display: flex;
+            align-items: baseline;
+            gap: 0.8rem;
+            margin-top: 0.9rem;
+        }
+
+        .hero-metric-value {
+            font-size: 1.7rem;
+            font-weight: 700;
+        }
+
+        .hero-metric-label {
+            font-size: 0.8rem;
+            color: #cbd5f5;
+        }
+
+        .hero-card-list {
+            list-style: none;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #e5e7eb;
+        }
+
+        .hero-card-list li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* Sections */
+
+        section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.95rem;
+            color: var(--muted);
+            margin-bottom: 1.8rem;
+            max-width: 40rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 1.3rem 1.4rem;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+        }
+
+        .card h3 {
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.15rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+        }
+
+        .list-check {
+            list-style: none;
+            margin-top: 0.6rem;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .list-check li::before {
+            content: "•";
+            margin-right: 0.4rem;
+            color: var(--accent);
+        }
+
+        /* Timeline */
+
+        .timeline {
+            border-left: 2px solid rgba(148, 163, 184, 0.7);
+            padding-left: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .timeline-item {
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -1.13rem;
+            top: 0.25rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--accent);
+        }
+
+        .timeline-period {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-bottom: 0.1rem;
+        }
+
+        .timeline-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.1rem;
+        }
+
+        .timeline-detail {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        /* Tableau simple pour performances */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.5rem 0.6rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+        }
+
+        th {
+            font-weight: 600;
+            background: #f3f4f6;
+        }
+
+        /* Contact */
+
+        .contact-card {
+            display: grid;
+            grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+            gap: 1.8rem;
+            align-items: start;
+        }
+
+        form {
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.1rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            border-radius: 0.65rem;
+            border: 1px solid rgba(148, 163, 184, 0.7);
+            padding: 0.55rem 0.7rem;
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            background: #f9fafb;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 1px rgba(31, 79, 123, 0.25);
+            background: #fff;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .contact-info {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .contact-info p + p {
+            margin-top: 0.5rem;
+        }
+
+        footer {
+            font-size: 0.8rem;
+            color: var(--muted);
+            text-align: center;
+            padding: 1.5rem 0 2rem;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 900px) {
+            .hero-inner,
+            .contact-card,
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding-top: 2.5rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 720px) {
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                margin-top: 0.7rem;
+                flex-wrap: wrap;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Barre de navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Gestion Financière – Projet professionnel</div>
+                <div class="nav-links">
+                    <a href="#projet">Projet</a>
+                    <a href="#competences">Compétences</a>
+                    <a href="#methodologie">Méthodologie</a>
+                    <a href="#conseils">Conseils</a>
+                    <a href="#parcours">Parcours</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Section Hero -->
+    <section class="hero">
+        <div class="container hero-inner">
+            <div>
+                <div class="hero-tag">
+                    <span>Projet professionnel</span>
+                    <span>• Gestion financière</span>
+                </div>
+                <h1>
+                    Structurer, piloter et optimiser la <span>performance financière</span>.
+                </h1>
+                <p class="hero-subtitle">
+                    Mon projet professionnel est orienté vers la gestion financière d’entreprise : 
+                    analyse de performance, suivi des flux, gestion des risques et accompagnement des décisions stratégiques.
+                </p>
+                <div class="hero-actions">
+                    <a href="#contact">
+                        <button class="btn-primary">Me contacter</button>
+                    </a>
+                    <a href="#projet">
+                        <button class="btn-ghost">Découvrir mon projet</button>
+                    </a>
+                </div>
+                <p class="hero-meta">
+                    Ce site présente ma vision, mes compétences et la valeur que je peux apporter en gestion financière.
+                </p>
+            </div>
+
+            <div class="hero-card">
+                <div class="hero-card-title">Objectif de carrière</div>
+                <p style="font-size: 0.88rem; color:#d1d5db;">
+                    Évoluer vers un poste à responsabilités en gestion / contrôle financier, 
+                    avec une forte dimension d’analyse et de pilotage de la performance.
+                </p>
+                <div class="hero-metric">
+                    <div class="hero-metric-value">3–5 ans</div>
+                    <div class="hero-metric-label">Horizon pour consolider mon expertise opérationnelle et analytique.</div>
+                </div>
+                <ul class="hero-card-list">
+                    <li>• Gestion budgétaire et suivi de trésorerie</li>
+                    <li>• Analyse financière pour la décision</li>
+                    <li>• Mise en place d’outils de pilotage (tableaux de bord)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projet professionnel -->
+    <section id="projet">
+        <div class="container">
+            <h2 class="section-title">Mon projet professionnel</h2>
+            <p class="section-subtitle">
+                Je souhaite mettre mes compétences au service des organisations pour 
+                sécuriser leur situation financière, améliorer la visibilité sur leurs résultats 
+                et contribuer à la création de valeur à long terme.
+            </p>
+
+            <div class="grid-2">
+                <div class="card">
+                    <span class="pill">Vision</span>
+                    <h3>Accompagner les décisions clés de l’entreprise</h3>
+                    <p>
+                        En gestion financière, mon ambition est de fournir des analyses fiables, 
+                        des indicateurs clairs et des scénarios chiffrés pour éclairer les décisions 
+                        de direction (investissements, financements, optimisation des coûts, etc.).
+                    </p>
+                </div>
+                <div class="card">
+                    <span class="pill">Axes de développement</span>
+                    <h3>Construire une expertise progressive</h3>
+                    <p>
+                        Je souhaite me développer d’abord sur les missions opérationnelles 
+                        (budgets, clôtures, suivi de trésorerie), puis évoluer vers des fonctions
+                        plus stratégiques d’analyse et de pilotage de la performance.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compétences -->
+    <section id="competences">
+        <div class="container">
+            <h2 class="section-title">Compétences en gestion financière</h2>
+            <p class="section-subtitle">
+                Un socle technique solide, complété par une approche rigoureuse et structurée 
+                des problématiques financières.
+            </p>
+
+            <div class="grid">
+                <div class="card">
+                    <span class="pill">Analyse financière</span>
+                    <h3>Lecture et interprétation des états financiers</h3>
+                    <p>
+                        Capacité à lire un bilan, un compte de résultat et un tableau de flux 
+                        de trésorerie pour apprécier la santé financière d’une organisation.
+                    </p>
+                    <ul class="list-check">
+                        <li>Ratios (rentabilité, solvabilité, liquidité, structure)</li>
+                        <li>Analyse des marges et du besoin en fonds de roulement</li>
+                        <li>Diagnostic financier synthétique</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <span class="pill">Gestion budgétaire</span>
+                    <h3>Prévision, suivi et contrôle des écarts</h3>
+                    <p>
+                        Construction de budgets, suivi des réalisations, identification des écarts 
+                        et propositions d’actions correctives.
+                    </p>
+                    <ul class="list-check">
+                        <li>Budgets d’exploitation et de trésorerie</li>
+                        <li>Suivi des coûts et des charges</li>
+                        <li>Tableaux de bord de suivi budgétaire</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <span class="pill">Pilotage & outils</span>
+                    <h3>Structurer l’information financière</h3>
+                    <p>
+                        Mise en place d’outils simples et efficaces pour améliorer la lisibilité 
+                        de la situation financière et suivre les indicateurs clés.
+                    </p>
+                    <ul class="list-check">
+                        <li>Tableaux de bord et reporting</li>
+                        <li>Utilisation avancée d’Excel / tableurs</li>
+                        <li>Sensibilité aux ERP et systèmes d’information</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Méthodologie -->
+    <section id="methodologie">
+        <div class="container">
+            <h2 class="section-title">Méthodologie de travail</h2>
+            <p class="section-subtitle">
+                Ma manière de travailler en gestion financière repose sur la rigueur, 
+                la transparence des hypothèses et la pédagogie dans la présentation des résultats.
+            </p>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3>1. Compréhension du contexte</h3>
+                    <p>
+                        Analyse de l’activité, du modèle économique et des enjeux principaux 
+                        (croissance, rentabilité, trésorerie, investissements).
+                    </p>
+                    <ul class="list-check">
+                        <li>Recueil des données clés</li>
+                        <li>Clarification des objectifs financiers</li>
+                        <li>Identification des contraintes et risques</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>2. Structuration & analyse</h3>
+                    <p>
+                        Mise en forme des données, choix des bons indicateurs, 
+                        élaboration de scénarios et visualisation claire des résultats.
+                    </p>
+                    <ul class="list-check">
+                        <li>Organisation des données financières</li>
+                        <li>Construction d’indicateurs pertinents</li>
+                        <li>Analyse des scénarios et impacts</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>3. Restitution et recommandations</h3>
+                    <p>
+                        Restitution synthétique, adaptée au niveau de détail attendu, 
+                        et focus sur les décisions concrètes à prendre.
+                    </p>
+                    <ul class="list-check">
+                        <li>Supports clairs (tableaux, graphiques)</li>
+                        <li>Explication des hypothèses</li>
+                        <li>Propositions d’actions chiffrées</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>4. Suivi dans le temps</h3>
+                    <p>
+                        Mise à jour régulière des données et ajustement des analyses 
+                        pour suivre l’évolution réelle par rapport aux prévisions.
+                    </p>
+                    <ul class="list-check">
+                        <li>Actualisation des indicateurs</li>
+                        <li>Analyse des écarts réel / prévisionnel</li>
+                        <li>Amélioration continue des outils</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NOUVELLE SECTION : Conseils & performances -->
+    <section id="conseils">
+        <div class="container">
+            <h2 class="section-title">Conseils d’investissement & performances</h2>
+            <p class="section-subtitle">
+                Une approche structurée de l’investissement, basée sur la discipline, la gestion du risque 
+                et une vision long terme. Les éléments ci-dessous sont présentés à titre pédagogique 
+                et ne constituent pas un conseil personnalisé.
+            </p>
+
+            <div class="grid-2">
+                <!-- Méthodes d’investissement -->
+                <div class="card">
+                    <span class="pill">Méthodes</span>
+                    <h3>Principes clés de ma méthode d’investissement</h3>
+                    <p>
+                        Ma approche repose sur quelques piliers simples : diversification, vision long terme,
+                        et gestion rigoureuse du risque. L’objectif est de construire des portefeuilles cohérents
+                        avec un niveau de risque maîtrisé.
+                    </p>
+                    <ul class="list-check">
+                        <li><strong>Diversification :</strong> éviter la concentration sur un seul secteur ou un seul actif.</li>
+                        <li><strong>Investissement progressif (DCA) :</strong> lisser les points d’entrée dans le temps.</li>
+                        <li><strong>Allocation stratégique :</strong> définir une répartition cible (actions / obligations / liquidités…) adaptée au profil.</li>
+                        <li><strong>Discipline :</strong> décisions basées sur des critères chiffrés, pas sur les émotions.</li>
+                        <li><strong>Revue régulière :</strong> rééquilibrage périodique en fonction des objectifs et de la performance.</li>
+                    </ul>
+                </div>
+
+                <!-- Conseils / bonne pratiques -->
+                <div class="card">
+                    <span class="pill">Conseils</span>
+                    <h3>Quelques bonnes pratiques générales</h3>
+                    <p>
+                        Voici quelques principes généraux que je mets en avant lorsque je parle de gestion patrimoniale
+                        et d’investissement de manière pédagogique.
+                    </p>
+                    <ul class="list-check">
+                        <li>Connaître son <strong>horizon de placement</strong> avant d’investir.</li>
+                        <li>Définir un <strong>niveau de risque acceptable</strong> et s’y tenir.</li>
+                        <li>Garder une <strong>réserve de sécurité</strong> en liquidités.</li>
+                        <li>Éviter de prendre des décisions sous le coup de l’actualité ou de la panique.</li>
+                        <li>Suivre des <strong>indicateurs simples</strong> (volatilité, drawdown, performance annualisée…).</li>
+                    </ul>
+                    <p style="font-size: 0.8rem; color: var(--muted); margin-top: 0.6rem;">
+                        Ces éléments sont donnés à titre informatif et ne remplacent pas l’accompagnement 
+                        d’un professionnel réglementé pour des décisions d’investissement personnelles.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Performances -->
+            <div class="card" style="margin-top: 1.8rem;">
+                <span class="pill">Performances (exemple)</span>
+                <h3>Performances historiques de ma démarche d’investissement</h3>
+                <p>
+                    À titre indicatif, voici un exemple de suivi de performance d’un portefeuille fictif
+                    géré selon les principes mentionnés ci-dessus. Tu peux remplacer les chiffres par
+                    tes <strong>vraies performances</strong> si tu disposes d’un historique précis.
+                </p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Période</th>
+                            <th>Performance annuelle</th>
+                            <th>Volatilité estimée</th>
+                            <th>Commentaire</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Année N-3</td>
+                            <td>+6,2 %</td>
+                            <td>Modérée</td>
+                            <td>Marché globalement haussier, bonne tenue des positions actions.</td>
+                        </tr>
+                        <tr>
+                            <td>Année N-2</td>
+                            <td>+3,8 %</td>
+                            <td>Faible à modérée</td>
+                            <td>Année plus volatile, renforcement progressif via DCA.</td>
+                        </tr>
+                        <tr>
+                            <td>Année N-1</td>
+                            <td>+8,5 %</td>
+                            <td>Modérée</td>
+                            <td>Bonne contribution des ETF diversifiés et rééquilibrage réussi.</td>
+                        </tr>
+                        <tr>
+                            <td>Performance annualisée (3 ans)</td>
+                            <td>+6,1 % / an</td>
+                            <td>—</td>
+                            <td>Illustration d’une stratégie long terme prudente mais régulière.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p style="font-size: 0.8rem; color: var(--muted); margin-top: 0.6rem;">
+                    Mention légale : ces chiffres sont fournis à titre d’exemple pédagogique. 
+                    Les performances passées, réelles ou simulées, ne préjugent pas des performances futures 
+                    et ne constituent pas une garantie de résultat.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parcours -->
+    <section id="parcours">
+        <div class="container">
+            <h2 class="section-title">Parcours & formation</h2>
+            <p class="section-subtitle">
+                Un parcours en construction, orienté vers la gestion financière et le pilotage 
+                des performances économiques. (À adapter avec ton vrai parcours.)
+            </p>
+
+            <div class="card">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-period">20XX – 20XX</div>
+                        <div class="timeline-title">Formation en gestion / finance</div>
+                        <div class="timeline-detail">
+                            Approfondissement des bases en comptabilité, contrôle de gestion, 
+                            analyse financière et gestion budgétaire.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-period">20XX – 20XX</div>
+                        <div class="timeline-title">Expérience en entreprise (stage / alternance)</div>
+                        <div class="timeline-detail">
+                            Participation au suivi budgétaire, mise à jour de tableaux de bord, 
+                            analyses de coûts et suivi de la trésorerie.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-period">Objectif à moyen terme</div>
+                        <div class="timeline-title">Poste en contrôle / gestion financière</div>
+                        <div class="timeline-detail">
+                            Prendre en charge des missions de pilotage financier, de reporting 
+                            et d’aide à la décision au sein d’une organisation.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Me contacter</h2>
+            <p class="section-subtitle">
+                Intéressé par mon profil ou mon projet en gestion financière ?  
+                N’hésitez pas à me contacter pour un échange, un stage, une alternance ou une collaboration.
+            </p>
+
+            <div class="contact-card card">
+                <form action="#" method="post">
+                    <div>
+                        <label for="nom">Nom</label>
+                        <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+                    </div>
+                    <div>
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" placeholder="votre.email@exemple.com" required>
+                    </div>
+                    <div>
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Expliquez votre demande ou vos besoins en gestion financière..." required></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn-primary">Envoyer le message</button>
+                    </div>
+                </form>
+
+                <div class="contact-info">
+                    <p>
+                        Tu peux adapter cette section avec tes <strong>vraies coordonnées</strong> :<br>
+                        – E-mail professionnel<br>
+                        – Numéro de téléphone<br>
+                        – LinkedIn ou autre réseau professionnel
+                    </p>
+                    <p>
+                        Ce site a vocation à présenter clairement ton projet professionnel et 
+                        à montrer ta compréhension des enjeux de la gestion financière :
+                        rigueur, analyse et capacité à piloter les chiffres.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        © <span id="year"></span> – Projet professionnel en gestion financière. Tous droits réservés.
+    </footer>
+
+    <script>
+        // Mise à jour automatique de l'année dans le footer
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
